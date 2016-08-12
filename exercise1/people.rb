@@ -5,7 +5,7 @@ class Person
     @name = name
   end
   def greeting
-    return "Hi, my name is #{name}"
+    return "Hi, my name is #{@name}"
   end
 
 end
@@ -34,3 +34,6 @@ instructor1 = Instructor.new("Chris")
 student1 = Student.new("Christina")
 instructor1.teach
 student1.learn
+
+#Below won't work since teach is a method within the Instructor clas
+#student1.teach
