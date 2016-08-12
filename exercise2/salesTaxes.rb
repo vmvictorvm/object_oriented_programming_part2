@@ -36,16 +36,16 @@ class Receipt
         if item.imported == true
           #puts "This is import"
           if item.prodType != "book" && item.prodType != "food" && item.prodType != "medical"
-            item.priceAfterTax = item.shelfPrice * 1.15
+            item.priceAfterTax = item.shelfPrice.round(2) * 1.15
           else
-            item.priceAfterTax = item.shelfPrice * 1.05
+            item.priceAfterTax = item.shelfPrice.round(2) * 1.05
           end
         else
           #puts "This is not import"
           if item.prodType != "book" && item.prodType != "food" && item.prodType != "medical"
-            item.priceAfterTax = item.shelfPrice * 1.10
+            item.priceAfterTax = item.shelfPrice.round(2) * 1.10
           else
-            item.priceAfterTax = item.shelfPrice
+            item.priceAfterTax = item.shelfPrice.round(2)
           end
         end
         #outputArray << "Item #{item.name} final price is #{item.priceAfterTax.round(2)}"
@@ -68,6 +68,7 @@ class Receipt
       end
       puts "Sales Taxes: #{@salesTax.round(2)}"
       puts "Total: #{@total.round(2)}"
+      puts "\n"
     end
 
 end
