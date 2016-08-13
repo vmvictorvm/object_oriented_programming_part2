@@ -1,80 +1,8 @@
-class Item
-  attr_accessor :name
-  attr_accessor :shelfPrice
-  attr_accessor :prodType
-  attr_accessor :priceAfterTax
-  attr_accessor :imported
-  attr_accessor :quantity
-
-  def initialize(name, shelfPrice, prodType, imported, quantity)
-    @name = name
-    @shelfPrice = shelfPrice
-    @prodType = prodType
-    @priceAfterTax = 0
-    @imported = imported
-    @quantity = quantity
-  end
+require_relative 'item'
+require_relative 'receipt'
 
 
-end
-
-
-
-
-class Receipt
-  attr_accessor :items #Array of Item objects
-
-    def initialize(items)
-      @items= items
-      @salesTax = 0
-      @total = 0
-    end
-
-    def calculateTotal
-      #outputArray = []
-      #Loop through the array of items and
-      #calculate the total price
-      @items.each do |item|
-        if item.imported == true
-          #puts "This is import"
-          if item.prodType != "book" && item.prodType != "food" && item.prodType != "medical"
-            item.priceAfterTax = item.shelfPrice.round(2) * 1.15
-          else
-            item.priceAfterTax = item.shelfPrice.round(2) * 1.05
-          end
-        else
-          #puts "This is not import"
-          if item.prodType != "book" && item.prodType != "food" && item.prodType != "medical"
-            item.priceAfterTax = item.shelfPrice.round(2) * 1.10
-          else
-            item.priceAfterTax = item.shelfPrice.round(2)
-          end
-        end
-        #outputArray << "Item #{item.name} final price is #{item.priceAfterTax.round(2)}"
-        #calculatedArray << item
-      end
-      #outputReceipt(outputArray)
-      outputReceipt
-    end
-
-
-    def outputReceipt
-      @items.each do |item|
-          puts "#{item.quantity} #{item.name} : #{item.priceAfterTax.round(2) * item.quantity}"
-        @salesTax += (item.priceAfterTax.round(2) - item.shelfPrice.round(2)) * item.quantity
-        @total += item.priceAfterTax.round(2) * item.quantity
-      end
-      puts "Sales Taxes: #{@salesTax.round(2)}"
-      puts "Total: #{@total.round(2)}"
-      puts "\n"
-    end
-
-end
-
-
-
-
-#Helper method #1:  check if the name of the product(string) is a food
+#Helper method #1:  check if the name of the product(string) contains food keywords
 def isFood(nameOfProd)
   if nameOfProd =~ /chocolate/i #we can add more foods here in the future
     return true
@@ -83,6 +11,7 @@ def isFood(nameOfProd)
   end
 end
 
+#Helper method #2:  check if the name of the product(string) contains Medical Product keywords
 def isMedicalProd(nameOfProd)
   if nameOfProd =~ /pills/i #we can add more medecine keywords here in the future
     return true
@@ -91,6 +20,7 @@ def isMedicalProd(nameOfProd)
   end
 end
 
+#Helper method #3:  check if the name of the product(string) contains Book keywords
 def isBook(nameOfProd)
   if nameOfProd =~ /book/i #we can add more books keywords here in the future
     return true
@@ -99,6 +29,7 @@ def isBook(nameOfProd)
   end
 end
 
+#Helper method #4:  check if the name of the product(string) contains the word "imported"
 def isImported(nameOfProd)
   if nameOfProd =~ /imported/i
     return true
@@ -107,7 +38,12 @@ def isImported(nameOfProd)
   end
 end
 
-
+#Please note that input are in this format:
+# 'Quantity of the item' 'name of product'  'at' 'price'
+# e.g: 1 imported bottle of perfume at 27.99
+#  1 -> Quantity of the item --> lineArray[0]
+#  "imported bottle of perfume" --> Name of product --> lineArray[1 to length-3]
+#  27.99 --> price --> lineArray[length - 1]
 aryItems = []
 puts "Please provide user input.  Type 'END' to ended your input"
 $/ = "END"
@@ -156,7 +92,7 @@ receipt.calculateTotal
 
 
 
-
+#OLD INPUT FORMAT
 # aryItems = []
 # item1 = Item.new("book", 12.49, "book", false)
 # item2 = Item.new("music CD", 14.99, "other", false)
